@@ -266,3 +266,355 @@ textarea{resize:vertical}
 
 /* Ajuste: logo del video EXTRA grande */
 .hero__logo{width:min(700px,86vw) !important;}
+
+
+/* -----------------------------
+   Tienda / Carrito (Snipcart)
+   (sin afectar el layout existente)
+------------------------------ */
+
+/* Botón Carrito visible (navbar) */
+.btn--cart{
+  padding:10px 14px;
+}
+.btn--cart .snipcart-items-count{
+  display:inline-flex;
+  min-width:24px;
+  height:24px;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  padding:0 8px;
+  margin-left:8px;
+  background: rgba(11,15,20,.45);
+  border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.92);
+  font-weight:700;
+}
+
+/* Botón flotante */
+.cartFab{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.92);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.cartFab:hover{ background: rgba(255,255,255,.12); }
+.cartFab .snipcart-items-count{
+  display:inline-flex;
+  min-width:24px;
+  height:24px;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  padding:0 8px;
+  background: rgba(11,15,20,.45);
+  border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.92);
+  font-weight:700;
+}
+
+/* Catálogo */
+.catalogNotice{
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.86);
+}
+.catalogGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:14px;
+  margin-top:12px;
+}
+@media (max-width: 980px){
+  .catalogGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 620px){
+  .catalogGrid{ grid-template-columns: 1fr; }
+}
+.productCard{
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,.38);
+  display:flex;
+  flex-direction:column;
+}
+.productImg{
+  width:100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  background: rgba(0,0,0,.2);
+}
+.productBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
+.productTitle{ margin:0; font-size: 16px; }
+.productPrice{ color: rgba(255,255,255,.86); font-weight:700; }
+.productDesc{ color: rgba(255,255,255,.74); font-size: 13px; line-height:1.55; white-space:pre-line; }
+.productActions{
+  margin-top:auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+.btnSmall{
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+  cursor:pointer;
+  font-weight:600;
+}
+.btnSmall:hover{ background: rgba(255,255,255,.10); }
+.btnAdd{
+  padding:10px 14px;
+  border-radius:999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color:#1a120c;
+  border:0;
+  font-weight:700;
+  cursor:pointer;
+}
+.btnAdd[disabled]{ opacity:.5; cursor:not-allowed; }
+
+/* Toast */
+#nomadToast{
+  position:fixed;
+  left:50%;
+  bottom:92px;
+  transform:translateX(-50%) translateY(8px);
+  background: rgba(11,15,20,.92);
+  border:1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+  padding:10px 14px;
+  border-radius:999px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.38);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 10000;
+  font-size: 13px;
+}
+#nomadToast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+
+
+
+/* ===== Drawer (Carrito + Catálogo) ===== */
+.drawer{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+}
+.drawer.is-open{ display:block; }
+
+.drawer__overlay{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+}
+
+.drawer__panel{
+  position:absolute;
+  top:0;
+  right:0;
+  height:100%;
+  width: min(520px, 92vw);
+  background:#ffffff;
+  color:#111;
+  box-shadow: -18px 0 60px rgba(0,0,0,.45);
+  transform: translateX(100%);
+  transition: transform .22s ease;
+  display:flex;
+  flex-direction:column;
+}
+.drawer.is-open .drawer__panel{ transform: translateX(0); }
+
+.drawer__head{
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.drawer__title{ display:flex; flex-direction:column; gap:2px; }
+.drawer__subtitle{ font-size:12px; color:#666; }
+
+.drawer__close{
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.04);
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-size: 16px;
+}
+.drawer__close:hover{ background: rgba(0,0,0,.08); }
+
+.drawer__tabs{
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  gap:8px;
+}
+.drawer__tab{
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.04);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor:pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+.drawer__tab.is-active{
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.drawer__body{
+  padding: 12px 16px;
+  overflow:auto;
+  flex:1;
+}
+
+.drawer__notice{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255, 214, 102, .22);
+  color:#111;
+  padding: 12px 12px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.drawer__notice code{
+  background: rgba(0,0,0,.06);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.drawerCatalogGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.drawerProduct{
+  display:grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 16px;
+  overflow:hidden;
+}
+.drawerProduct img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: rgba(0,0,0,.06);
+}
+.drawerProduct__body{
+  padding: 10px 10px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+}
+.drawerProduct__title{ margin:0; font-size: 14px; line-height:1.25; }
+.drawerProduct__price{ font-weight: 800; color:#111; font-size: 13px; }
+.drawerProduct__desc{ font-size: 12px; color:#555; line-height:1.45; max-height: 3.8em; overflow:hidden; }
+.drawerProduct__actions{ display:flex; gap:8px; align-items:center; justify-content:space-between; }
+
+.drawerBtn{
+  border:1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.04);
+  color:#111;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight:700;
+  font-size: 12px;
+  cursor:pointer;
+}
+.drawerBtn:hover{ background: rgba(0,0,0,.08); }
+.drawerBtnPrimary{
+  border:0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color:#1a120c;
+}
+.drawerBtnPrimary[disabled]{ opacity:.55; cursor:not-allowed; }
+
+.drawerCartList{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+.cartLine{
+  border:1px solid rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 10px 10px;
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  justify-content:space-between;
+}
+.cartLine__info{ display:flex; flex-direction:column; gap:2px; }
+.cartLine__name{ font-weight:800; font-size: 13px; }
+.cartLine__meta{ font-size: 12px; color:#666; }
+.cartLine__qty{
+  display:flex; gap:6px; align-items:center;
+}
+.qtyBtn{
+  width:30px; height:30px;
+  border-radius: 10px;
+  border:1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.04);
+  cursor:pointer;
+  font-weight:900;
+}
+.qtyBtn:hover{ background: rgba(0,0,0,.08); }
+
+.drawer__footer{
+  padding: 12px 16px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.drawer__total{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  font-size: 12px;
+  color:#666;
+}
+.drawer__total strong{ color:#111; font-size: 16px; }
+
+/* Ajuste: el botón carrito del navbar siempre visible */
+.btn--cart{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.95);
+}
+.btn--cart:hover{ background: rgba(255,255,255,.16); }

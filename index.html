@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.css" />
 </head>
 
 <body>
@@ -35,6 +36,7 @@
           <li><a href="#proceso">Proceso</a></li>
           <li><a href="#paciente">Asistencia</a></li>
           <li><a href="#contacto" class="btn btn--small">Contacto</a></li>
+          <li><button type="button" class="btn btn--small btn--cart js-cart-open" aria-label="Abrir carrito">Carrito <span class="snipcart-items-count js-cart-count" aria-hidden="true">0</span></button></li>
         </ul>
       </nav>
     </div>
@@ -145,6 +147,12 @@
         </div>
       </div>
     </section>
+
+  
+
+
+
+
 
     <section class="section" id="proceso">
       <div class="container">
@@ -284,6 +292,59 @@
     </div>
   </footer>
 
+
+  <button class="cartFab js-cart-open" type="button" aria-label="Abrir carrito">
+    <span aria-hidden="true">🛒</span>
+    <span class="snipcart-items-count js-cart-count" aria-hidden="true">0</span>
+  </button>
+
+
+  
+  <!-- Carrito + Catálogo en panel lateral -->
+  <div class="drawer" id="nomadDrawer" aria-hidden="true">
+    <div class="drawer__overlay js-cart-close" aria-hidden="true"></div>
+
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Carrito y catálogo">
+      <header class="drawer__head">
+        <div class="drawer__title">
+          <strong>Carrito</strong>
+          <span class="drawer__subtitle">Selecciona pruebas y completa tu compra</span>
+        </div>
+        <button class="drawer__close js-cart-close" type="button" aria-label="Cerrar">✕</button>
+      </header>
+
+      <nav class="drawer__tabs" aria-label="Secciones del carrito">
+        <button class="drawer__tab is-active" type="button" data-tab="catalogo">Pruebas</button>
+        <button class="drawer__tab" type="button" data-tab="carrito">Mi carrito (<span id="drawerCount">0</span>)</button>
+      </nav>
+
+      <div class="drawer__body">
+        <div class="drawer__notice" id="drawerNotice" hidden>
+          <strong>Pago desactivado:</strong> falta configurar tu llave pública de Snipcart en <code>index.html</code>.
+          Puedes seleccionar pruebas y armar tu carrito, pero para cobrar debes activar la llave.
+        </div>
+
+        <section id="drawerCatalog" class="drawer__section"></section>
+        <section id="drawerCart" class="drawer__section" hidden></section>
+      </div>
+
+      <footer class="drawer__footer">
+        <div class="drawer__total">
+          <span>Total</span>
+          <strong id="drawerTotal">$0</strong>
+        </div>
+        <button class="btn btn--small js-checkout" type="button">Pagar</button>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- Botón oculto para abrir Snipcart solo al pagar -->
+  <button id="snipcartOpen" class="snipcart-checkout" type="button" style="display:none" aria-hidden="true" tabindex="-1"></button>
+
+
+<div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="modal"></div>
+  <script async src="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.js"></script>
   <script src="js/main.js"></script>
+<script src="js/cart-drawer.js"></script>
 </body>
 </html>
