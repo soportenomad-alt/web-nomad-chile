@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.css" />
+  <!-- <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.css" /> -->
 </head>
 
 <body>
@@ -36,7 +36,7 @@
           <li><a href="#proceso">Proceso</a></li>
           <li><a href="#paciente">Asistencia</a></li>
           <li><a href="#contacto" class="btn btn--small">Contacto</a></li>
-          <li><button type="button" class="btn btn--small btn--cart js-cart-open" aria-label="Abrir carrito">Carrito <span class="snipcart-items-count js-cart-count" aria-hidden="true">0</span></button></li>
+          <!-- <li><button type="button" class="btn btn--small btn--cart js-cart-open" aria-label="Abrir carrito">Carrito <span class="snipcart-items-count js-cart-count" aria-hidden="true">0</span></button></li> -->
         </ul>
       </nav>
     </div>
@@ -328,14 +328,14 @@
   </footer>
 
 
-  <button class="cartFab js-cart-open" type="button" aria-label="Abrir carrito">
+  <!-- <button class="cartFab js-cart-open" type="button" aria-label="Abrir carrito">
     <span aria-hidden="true">🛒</span>
     <span class="snipcart-items-count js-cart-count" aria-hidden="true">0</span>
-  </button>
+  </button> -->
 
 
   
-  <!-- Carrito + Catálogo en panel lateral -->
+  <!-- Carrito + Catálogo en panel lateral
   <div class="drawer" id="nomadDrawer" aria-hidden="true">
     <div class="drawer__overlay js-cart-close" aria-hidden="true"></div>
 
@@ -373,13 +373,204 @@
     </aside>
   </div>
 
-  <!-- Botón oculto para abrir Snipcart solo al pagar -->
-  <button id="snipcartOpen" class="snipcart-checkout" type="button" style="display:none" aria-hidden="true" tabindex="-1"></button>
+  Botón oculto para abrir Snipcart solo al pagar 
+  <button id="snipcartOpen" class="snipcart-checkout" type="button" style="display:none" aria-hidden="true" tabindex="-1"></button> -->
 
 
-<div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="modal"></div>
-  <script async src="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.js"></script>
+<!-- <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="modal"></div>
+  <script async src="https://cdn.snipcart.com/themes/v3.4.0/default/snipcart.js"></script> -->
   <script src="js/main.js"></script>
-<script src="js/cart-drawer.js"></script>
+<!-- <script src="js/cart-drawer.js"></script> -->
+
+  <!-- Chatbot n8n Florence -->
+  <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+  
+  <style>
+    /* Estilos globales (por si n8n no usa Shadow DOM) */
+    :root {
+      --chat--color-primary: #061224 !important; 
+      --chat--color-primary-shade-50: #0a192f !important;
+      --chat--color-secondary: #003566 !important;
+    }
+
+    /* Forzar que el encabezado del chat n8n integrado sea MUY pequeño */
+    #mi-chat-container .chat-header {
+      padding: 8px 15px !important;
+      min-height: 0 !important;
+      height: auto !important;
+      margin-bottom: 0 !important;
+    }
+    
+    #mi-chat-container .chat-heading {
+      margin-bottom: 0 !important;
+      align-items: center !important;
+    }
+    
+    #mi-chat-container .chat-heading h1 {
+      font-size: 1.3rem !important;
+      margin: 0 !important;
+      line-height: 1.2 !important;
+      padding: 0 !important;
+    }
+
+    #mi-chat-container .chat-header p {
+      font-size: 0.85rem !important;
+      margin: 2px 0 0 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Nuestro contenedor flotante personalizado para el chat */
+    #florence-chat-wrapper {
+      position: fixed;
+      bottom: 120px; /* Sobre el botón */
+      right: 20px;
+      width: 380px;
+      height: 600px;
+      max-height: 80vh;
+      z-index: 9999;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Clase activa para mostrar el chat */
+    #florence-chat-wrapper.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    /* Nuestro botón personalizado grande, bonito y pulsante */
+    .florence-bot-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 85px;
+      height: 85px;
+      background-color: #061224;
+      border: 4px solid #00E5FF;
+      border-radius: 50%;
+      z-index: 10000;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.5), 0 6px 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: florencePulse 2s infinite;
+      
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23061224' /%3E%3Crect x='30' y='32' width='40' height='28' rx='12' fill='%23FFFFFF'/%3E%3Crect x='36' y='39' width='28' height='12' rx='4' fill='%23003566'/%3E%3Cpath d='M41 45 L45 45 M55 45 L59 45' stroke='%2300E5FF' stroke-width='3' stroke-linecap='round'/%3E%3Crect x='48' y='22' width='4' height='10' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='20' r='4' fill='%23FFFFFF'/%3E%3Cpath d='M20 95 C 20 65, 35 60, 50 60 C 65 60, 80 65, 80 95 Z' fill='%23FFFFFF'/%3E%3Cpath d='M40 60 L50 78 L60 60 Z' fill='%2300A8E8'/%3E%3Cpath d='M30 65 Q25 75, 35 85 Q40 85, 42 80' fill='none' stroke='%23111' stroke-width='2'/%3E%3Ccircle cx='42' cy='80' r='3' fill='%23111'/%3E%3C/svg%3E");
+      background-size: 85%;
+      background-position: center 5px;
+      background-repeat: no-repeat;
+    }
+    
+    .florence-bot-btn:hover {
+      transform: scale(1.1);
+      animation: none;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.8), 0 8px 25px rgba(0,0,0,0.6);
+    }
+
+    @keyframes florencePulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+    }
+  </style>
+
+  <!-- Contenedor del chat integrado -->
+  <div id="florence-chat-wrapper">
+    <!-- El widget de n8n se insertará aquí y ocupará el 100% -->
+    <div id="mi-chat-container" style="width: 100%; height: 100%;"></div>
+  </div>
+
+  <!-- Elemento HTML del botón personalizado -->
+  <div id="florence-custom-btn" class="florence-bot-btn" aria-label="Abrir asistente de cotizaciones Florence"></div>
+
+  <script type="module">
+    import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+    // Inicializamos el chat de n8n indicando el contenedor y el modo fullscreen (para que llene el contenedor)
+    createChat({
+      webhookUrl: 'https://winnieadame.app.n8n.cloud/webhook/ebae5491-46bc-4a85-bf7a-da0e99a28f07/chat',
+      target: '#mi-chat-container',
+      mode: 'fullscreen',
+      showWelcomeScreen: false,
+      defaultLanguage: 'es',
+      initialMessages: [
+        'Hola cómo estas 👋',
+        'Mi nombre es Florence. ¿En qué puedo ayudarte el día de hoy?'
+      ],
+      i18n: {
+        es: {
+          title: 'Florence',
+          subtitle: 'Asistente de cotizaciones',
+          getStarted: 'Nuevo chat',
+          inputPlaceholder: 'Escribe tu mensaje...',
+        }
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const customBtn = document.getElementById('florence-custom-btn');
+      const chatWrapper = document.getElementById('florence-chat-wrapper');
+      
+      // Toggle logic for opening/closing our custom wrapper
+      customBtn.addEventListener('click', () => {
+        chatWrapper.classList.toggle('is-open');
+      });
+
+      // Ocultar si se hace clic fuera del chat y del botón
+      document.addEventListener('click', (e) => {
+        if (chatWrapper.classList.contains('is-open') && 
+            !chatWrapper.contains(e.target) && 
+            !customBtn.contains(e.target)) {
+          chatWrapper.classList.remove('is-open');
+        }
+      });
+      
+      // Si el chat lograra inyectarse con Shadow DOM de forma impredecible, le inyectamos los estilos de respaldo
+      const checkInterval = setInterval(() => {
+        const shadowHosts = document.querySelectorAll('#mi-chat-container *');
+        for (let el of shadowHosts) {
+          if (el.shadowRoot && !el.shadowRoot.querySelector('#my-custom-styles')) {
+            const style = document.createElement('style');
+            style.id = 'my-custom-styles';
+            style.innerHTML = `
+              :host {
+                --chat--color-primary: #061224 !important; 
+                --chat--color-primary-shade-50: #0a192f !important;
+                --chat--color-secondary: #003566 !important;
+              }
+              .chat-header {
+                padding: 8px 15px !important;
+                min-height: 0 !important;
+                height: auto !important;
+                margin-bottom: 0 !important;
+              }
+              .chat-heading h1 {
+                font-size: 1.3rem !important;
+                margin: 0 !important;
+                line-height: 1.2 !important;
+              }
+              .chat-header p {
+                font-size: 0.85rem !important;
+                margin: 2px 0 0 0 !important;
+              }
+            `;
+            el.shadowRoot.appendChild(style);
+            clearInterval(checkInterval);
+            return;
+          }
+        }
+      }, 500);
+    });
+  </script>
 </body>
 </html>
